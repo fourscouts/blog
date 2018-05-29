@@ -1,0 +1,9 @@
+.is-blurple {
+	background-color: #7289da;
+	color: #fff;
+}
+
+.is-blurple:hover {
+	background-color: #697ec4;
+	color: #fff;
+}
