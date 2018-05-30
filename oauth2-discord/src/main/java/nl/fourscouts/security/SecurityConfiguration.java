@@ -46,5 +46,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		return new RestTemplate();
 	}
 
-	public static final String DISCORD_BOT_USER_AGENT = "DiscordBot (https://github.com/fourscouts/oauth2-discord)";
+	public static final String DISCORD_BOT_USER_AGENT = "DiscordBot (https://github.com/fourscouts/blog/tree/master/oauth2-discord)";
 }

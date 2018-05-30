@@ -27,7 +27,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:+'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.2.RELEASE'
     }
 }
 
@@ -47,11 +47,10 @@ dependencies {
 
     compile 'org.springframework.boot:spring-boot-starter-security'
     compile 'org.springframework.security:spring-security-oauth2-client'
-    compile 'org.springframework.security:spring-security-oauth2-jose'
-    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:+'
+    compile 'org.thymeleaf.extras:thymeleaf-extras-springsecurity4:3.0.2.RELEASE'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'org.assertj:assertj-core:+'
+    testCompile 'org.assertj:assertj-core:3.9.1'
 }
 
 bootRun {
