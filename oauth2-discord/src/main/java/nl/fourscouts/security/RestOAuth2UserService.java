@@ -62,8 +62,8 @@ public class RestOAuth2UserService implements OAuth2UserService<OAuth2UserReques
 		ResponseEntity<Map<String, Object>> responseEntity = restOperations.exchange(userInfoUrl, HttpMethod.GET, new HttpEntity<>(headers), typeReference);
 
 		Map<String, Object> userAttributes = responseEntity.getBody();
-		Set<GrantedAuthority> autorities = Collections.singleton(new OAuth2UserAuthority(userAttributes));
+		Set<GrantedAuthority> authorities = Collections.singleton(new OAuth2UserAuthority(userAttributes));
 
-		return new DefaultOAuth2User(autorities, userAttributes, userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName());
+		return new DefaultOAuth2User(authorities, userAttributes, userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName());
 	}
 }
