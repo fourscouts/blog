@@ -48,7 +48,7 @@ public class Show {
 
 	@CommandHandler
 	public void reserveTickets(ReserveTickets command, DeadlineManager deadlineManager) {
-		if (availableTickets >= command.getAmount()) {
+		if (!(reservations.containsKey(command.getReservationId()) || (availableTickets < command.getAmount()))) {
 			String reservationDeadlineId = deadlineManager.schedule(Duration.ofMinutes(15), "reservation", command.getReservationId());
 
 			apply(new TicketsReserved(command.getShowId(), command.getReservationId(), command.getAmount()), MetaData.with("reservationDeadlineId", reservationDeadlineId));
@@ -69,6 +69,11 @@ public class Show {
 		apply(new ReservationConfirmed(command.getReservationId()));
 	}
 
+	@EventHandler
+	public void onReservationConfirmed(ReservationConfirmed event) {
+		reservations.remove(event.getReservationId());
+	}
+
 	@DeadlineHandler
 	public void handleReservationExpired(String reservationId) {
 		apply(new ReservationExpired(reservationId));
@@ -79,10 +84,5 @@ public class Show {
 		Reservation reservation = reservations.remove(event.getReservationId());
 
 		availableTickets += reservation.getAmountOfTickets();
-	}
-
-	@EventHandler
-	public void onReservationConfirmed(ReservationConfirmed event) {
-		reservations.remove(event.getReservationId());
 	}
 }

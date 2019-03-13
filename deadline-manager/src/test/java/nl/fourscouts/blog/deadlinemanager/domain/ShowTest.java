@@ -34,12 +34,7 @@ public class ShowTest {
 		fixture
 			.givenNoPriorActivity()
 			.when(new PlanShow(SHOW_ID, SHOWTIME, AVAILABLE_TICKETS))
-			.expectEvents(showPlanned())
-			.expectState(show -> {
-				assertEquals(SHOW_ID, show.getShowId());
-				assertEquals(SHOWTIME, show.getTime());
-				assertEquals(AVAILABLE_TICKETS, show.getAvailableTickets());
-			});
+			.expectEvents(showPlanned());
 	}
 
 	@Test
@@ -48,11 +43,16 @@ public class ShowTest {
 			.given(showPlanned())
 			.when(new ReserveTickets(SHOW_ID, RESERVATION_ID, RESERVED_TICKETS))
 			.expectEvents(ticketsReserved())
-			.expectState(show -> {
-				assertEquals(AVAILABLE_TICKETS - RESERVED_TICKETS, show.getAvailableTickets());
-				assertTrue(show.getReservations().containsKey(RESERVATION_ID));
-			})
 			.expectScheduledDeadline(Duration.ofMinutes(15), RESERVATION_ID);
+	}
+
+	@Test
+	public void shouldNotMakeDoubleReservation() {
+		fixture
+			.given(showPlanned(), ticketsReserved())
+			.when(new ReserveTickets(SHOW_ID, RESERVATION_ID, RESERVED_TICKETS))
+			.expectNoEvents()
+			.expectNoScheduledDeadlines();
 	}
 
 	@Test
@@ -61,26 +61,17 @@ public class ShowTest {
 			.given(showPlanned())
 			.when(new ReserveTickets(SHOW_ID, RESERVATION_ID, AVAILABLE_TICKETS + 1))
 			.expectNoEvents()
-			.expectState(show -> {
-				assertEquals(AVAILABLE_TICKETS, show.getAvailableTickets());
-				assertFalse(show.getReservations().containsKey(RESERVATION_ID));
-			})
 			.expectNoScheduledDeadlines();
 	}
 
 	@Test
 	public void shouldExpireReservationAfterDeadlineExpires() {
-		@SuppressWarnings("unchecked")
-		ResultValidator<Show> validator = fixture
+		fixture
 			.given(showPlanned())
 			.andGivenCommands(new ReserveTickets(SHOW_ID, RESERVATION_ID, RESERVED_TICKETS))
 			.andThenTimeElapses(Duration.ofMinutes(16))
-			.expectDeadlinesMet(RESERVATION_ID);
-
-		validator.expectState(show -> {
-			assertEquals(AVAILABLE_TICKETS, show.getAvailableTickets());
-			assertFalse(show.getReservations().containsKey(RESERVATION_ID));
-		});
+			.expectDeadlinesMet(RESERVATION_ID)
+			.expectEvents(reservationExpired());
 	}
 
 	@Test
@@ -90,8 +81,6 @@ public class ShowTest {
 			.andGivenCommands(new ReserveTickets(SHOW_ID, RESERVATION_ID, RESERVED_TICKETS))
 			.when(new ConfirmReservation(SHOW_ID, RESERVATION_ID))
 			.expectEvents(reservationConfirmed())
-			.expectState(show -> {
-				assertFalse(show.getReservations().containsKey(RESERVATION_ID));
-			}).expectNoScheduledDeadlines();
+			.expectNoScheduledDeadlines();
 	}
 }
