@@ -66,7 +66,7 @@ public class ShowTest {
 		fixture
 			.given(showPlanned())
 			.andGivenCommands(new ReserveTickets(SHOW_ID, RESERVATION_ID, RESERVED_TICKETS))
-			.andThenTimeElapses(Duration.ofMinutes(16))
+			.whenThenTimeElapses(Duration.ofMinutes(16))
 			.expectDeadlinesMet(RESERVATION_ID)
 			.expectEvents(reservationExpired());
 	}

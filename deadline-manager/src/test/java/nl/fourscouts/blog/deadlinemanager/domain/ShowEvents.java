@@ -7,9 +7,9 @@ public class ShowEvents {
 
 	public static final String NAME = "Drake - the assassination vacation tour";
 
-	public static final LocalDateTime SHOWTIME = LocalDateTime.parse("2019-05-01T14:00:00");
+	public static final LocalDateTime SHOWTIME = LocalDateTime.parse("2019-04-26T20:00:00");
 
-	public static final int AVAILABLE_TICKETS = 10000;
+	public static final int AVAILABLE_TICKETS = 17000;
 
 	public static final String RESERVATION_ID = "reservationId";
 
