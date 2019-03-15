@@ -1,7 +1,6 @@
 package nl.fourscouts.blog.deadlinemanager.domain;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.deadline.DeadlineManager;
@@ -19,28 +18,31 @@ import java.util.Map;
 
 import static org.axonframework.modelling.command.AggregateLifecycle.apply;
 
-@Getter
 @Aggregate
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Show {
 	@AggregateIdentifier
 	private String showId;
 
+	private String name;
 	private LocalDateTime time;
+
 	private int availableTickets;
 
 	private Map<String, Reservation> reservations;
 
 	@CommandHandler
 	public Show(PlanShow command) {
-		apply(new ShowPlanned(command.getShowId(), command.getTime(), command.getAvailableTickets()));
+		apply(new ShowPlanned(command.getShowId(), command.getName(), command.getTime(), command.getAvailableTickets()));
 	}
 
 	@EventHandler
 	public void onPlanned(ShowPlanned event) {
 		showId = event.getShowId();
 
+		name = event.getName();
 		time = event.getTime();
+
 		availableTickets = event.getAvailableTickets();
 
 		reservations = new HashMap<>();

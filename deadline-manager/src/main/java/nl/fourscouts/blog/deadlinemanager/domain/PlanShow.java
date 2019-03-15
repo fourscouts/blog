@@ -12,6 +12,7 @@ public class PlanShow {
 	@TargetAggregateIdentifier
 	private String showId;
 
+	private String name;
 	private LocalDateTime time;
 
 	private int availableTickets;

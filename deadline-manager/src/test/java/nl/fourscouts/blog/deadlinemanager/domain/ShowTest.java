@@ -2,16 +2,13 @@ package nl.fourscouts.blog.deadlinemanager.domain;
 
 import org.axonframework.test.aggregate.AggregateTestFixture;
 import org.axonframework.test.aggregate.FixtureConfiguration;
-import org.axonframework.test.aggregate.ResultValidator;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static nl.fourscouts.blog.deadlinemanager.domain.ShowEvents.AVAILABLE_TICKETS;
+import static nl.fourscouts.blog.deadlinemanager.domain.ShowEvents.NAME;
 import static nl.fourscouts.blog.deadlinemanager.domain.ShowEvents.RESERVATION_ID;
 import static nl.fourscouts.blog.deadlinemanager.domain.ShowEvents.RESERVED_TICKETS;
 import static nl.fourscouts.blog.deadlinemanager.domain.ShowEvents.SHOWTIME;
@@ -33,7 +30,7 @@ public class ShowTest {
 	public void shouldPlan() {
 		fixture
 			.givenNoPriorActivity()
-			.when(new PlanShow(SHOW_ID, SHOWTIME, AVAILABLE_TICKETS))
+			.when(new PlanShow(SHOW_ID, NAME, SHOWTIME, AVAILABLE_TICKETS))
 			.expectEvents(showPlanned());
 	}
 
