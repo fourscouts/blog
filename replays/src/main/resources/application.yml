@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:rebuilds
+    username: sa
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
