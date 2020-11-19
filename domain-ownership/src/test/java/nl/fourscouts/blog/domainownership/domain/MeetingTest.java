@@ -42,7 +42,7 @@ class MeetingTest {
     }
 
     @Test
-    void shouldAcceptCanccellationByUnknownUser() {
+    void shouldNotCancelForUnknownUser() {
         fixture
                 .given(meetingPlanned())
                 .when(new CancelMeeting(MEETING_ID), Collections.singletonMap(USER_ID, "unknown"))
