@@ -45,12 +45,17 @@ class MeetingTest {
     void shouldNotCancelForUnknownUser() {
         fixture
                 .given(meetingPlanned())
-                .when(new CancelMeeting(MEETING_ID))
+                .when(new CancelMeeting(MEETING_ID), Collections.singletonMap(USER_ID, "unknown"))
+                .expectException(AccessDenied.class)
                 .expectNoEvents();
+    }
 
+    @Test
+    void shouldNotCancelWithoutUser() {
         fixture
                 .given(meetingPlanned())
-                .when(new CancelMeeting(MEETING_ID), Collections.singletonMap(USER_ID, "unknown"))
+                .when(new CancelMeeting(MEETING_ID))
+                .expectException(AccessDenied.class)
                 .expectNoEvents();
     }
 }
